@@ -3,3 +3,4 @@ streamlit
 joblib
 xgboost
 scikit-learn==1.7.1
+category_encoders
