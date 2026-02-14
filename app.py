@@ -69,7 +69,7 @@ with tab1:
         
         try:
             prediction = yield_model.predict(input_data)
-            st.metric("Expected Yield", f"{round(prediction[0], 2)} Tons")
+            st.metric("Expected Yield (In Tons)", f"{round(prediction[0], 2)} Tons")
             st.success(f"Analysis complete for {selected_crop} in {selected_district}")
         except Exception as e:
             st.error(f"Prediction Error: {e}")
