@@ -30,7 +30,7 @@ districts= ["ALLAHABAD", "AMBEDKAR NAGAR", "AZAMGARH", "BAHRAICH", "BALLIA",
 #---Sidebar---
 selected_crop=st.sidebar.selectbox("Select Crop", ["Rice", "Wheat", "Barley", "Mustard"])
 variety_choice=st.sidebar.radio("Select Variety", ["Stable", "High Yield", "Short Duration"])
-st.write("AI Creator: Shishir Dwivedi")
+st.write("AI Model Creator: Shishir Dwivedi")
 st.write("Integration and Website Development: Deepanshu Sinha and Sanshay Singh")
 
 #Main Interface
