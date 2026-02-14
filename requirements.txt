@@ -5,3 +5,4 @@ xgboost
 scikit-learn==1.7.1
 category_encoders
 altair==4.2.2
+setuptools
