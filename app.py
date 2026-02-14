@@ -27,8 +27,7 @@ districts= ["ALLAHABAD", "AMBEDKAR NAGAR", "AZAMGARH", "BAHRAICH", "BALLIA",
     "SIDDHARTH NAGAR", "SONBHADRA", "SULTANPUR", "VARANASI"]
 
 
-#---Sidebar---
-selected_crop=st.selectbox("Select Crop", ["Rice", "Wheat", "Barley", "Mustard"])
+
 st.write("AI Model Creator: Shishir Dwivedi")
 st.write("Integration and Website Development: Deepanshu Sinha and Sanshay Singh")
 
@@ -36,6 +35,7 @@ st.write("Integration and Website Development: Deepanshu Sinha and Sanshay Singh
 tab1, tab2, tab3=st.tabs(["📈 Yield Prediction", "🌱 Variety Details", "🛡️ Disease Prevention"])
 
 with tab1:
+    selected_crop=st.selectbox("Select Crop", ["Rice", "Wheat", "Barley", "Mustard"])
     st.header(f"Yield Forecast: {selected_crop}")
     
     # 1. Setup UI for the required inputs
