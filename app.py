@@ -65,35 +65,34 @@ with tab1:
             s_id, 
             land_area
         ]], columns=['District', 'Crop', 'Year', 'Season', 'Area'])
+        try:
+            # 1. Get the raw prediction (Tons per Hectare)
+            prediction_per_ha = yield_model.predict(input_data)[0]
+    
+            # 2. Calculate the total yield based on user's land area
+            total_harvest = prediction_per_ha * land_area
+    
+            # 3. Display both metrics
+            st.markdown("---")
+            col_a, col_b = st.columns(2)
+    
+            with col_a:
+                st.metric(
+                    label="Yield Efficiency", 
+                    value=f"{round(prediction_per_ha, 2)} Tons/Hectare",
+                    help="This is the estimated production for every 1 hectare of land."
+                )
         
-    try:
-        # 1. Get the raw prediction (Tons per Hectare)
-        prediction_per_ha = yield_model.predict(input_data)[0]
-    
-        # 2. Calculate the total yield based on user's land area
-        total_harvest = prediction_per_ha * land_area
-    
-        # 3. Display both metrics
-        st.markdown("---")
-        col_a, col_b = st.columns(2)
-    
-        with col_a:
-            st.metric(
-                label="Yield Efficiency", 
-                value=f"{round(prediction_per_ha, 2)} Tons/Hectare",
-                help="This is the estimated production for every 1 hectare of land."
-           )
-        
-        with col_b:
-            st.metric(
-                label="Total Estimated Harvest", 
-                value=f"{round(total_harvest, 2)} Tons",
-                help=f"Total production for your specific area of {land_area} hectares."
-           )
-        st.success(f"Analysis complete for {selected_crop} in {selected_district}!")
+            with col_b:
+                st.metric(
+                    label="Total Estimated Harvest", 
+                    value=f"{round(total_harvest, 2)} Tons",
+                    help=f"Total production for your specific area of {land_area} hectares."
+                )
+            st.success(f"Analysis complete for {selected_crop} in {selected_district}!")
 
-    except Exception as e:
-        st.error(f"Prediction Error: {e}")
+        except Exception as e:
+            st.error(f"Prediction Error: {e}")
 
 
 with tab2:
