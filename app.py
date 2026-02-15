@@ -2,7 +2,6 @@ import pandas as pd
 import streamlit as st
 import joblib
 
-
 #---Load Data (CSV)---
 df_seeds=pd.read_csv('seeds.csv')
 df_disease=pd.read_csv('Disease_Advice.csv')
@@ -67,13 +66,34 @@ with tab1:
             land_area
         ]], columns=['District', 'Crop', 'Year', 'Season', 'Area'])
         
-        try:
-            prediction = yield_model.predict(input_data)
-            st.metric("Expected Yield (In Tons)", f"{round(prediction[0], 2)} Tons")
-            st.success(f"Analysis complete for {selected_crop} in {selected_district}")
-        except Exception as e:
-            st.error(f"Prediction Error: {e}")
-            st.info("Check if the column names in 'input_data' match exactly what the team used.")
+    try:
+        # 1. Get the raw prediction (Tons per Hectare)
+        prediction_per_ha = yield_model.predict(input_data)[0]
+    
+        # 2. Calculate the total yield based on user's land area
+        total_harvest = prediction_per_ha * land_area
+    
+        # 3. Display both metrics
+        st.markdown("---")
+        col_a, col_b = st.columns(2)
+    
+        with col_a:
+            st.metric(
+                label="Yield Efficiency", 
+                value=f"{round(prediction_per_ha, 2)} Tons/Hectare",
+                help="This is the estimated production for every 1 hectare of land."
+           )
+        
+        with col_b:
+            st.metric(
+                label="Total Estimated Harvest", 
+                value=f"{round(total_harvest, 2)} Tons",
+                help=f"Total production for your specific area of {land_area} hectares."
+           )
+        st.success(f"Analysis complete for {selected_crop} in {selected_district}!")
+
+    except Exception as e:
+        st.error(f"Prediction Error: {e}")
 
 
 with tab2:
