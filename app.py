@@ -78,14 +78,14 @@ with tab1:
     
             with col_a:
                 st.metric(
-                    label="Yield Efficiency", 
+                    label="Yield Efficiency (Tons/Hectare)",
                     value=f"{round(prediction_per_ha, 2)} Tons/Hectare",
                     help="This is the estimated production for every 1 hectare of land."
                 )
         
             with col_b:
                 st.metric(
-                    label="Total Estimated Harvest", 
+                    label="Total Estimated Harvest (Tons)", 
                     value=f"{round(total_harvest, 2)} Tons",
                     help=f"Total production for your specific area of {land_area} hectares."
                 )
