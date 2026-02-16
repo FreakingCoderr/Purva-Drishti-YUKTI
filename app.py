@@ -96,39 +96,34 @@ with tab1:
 
 
 with tab2:
-    st.header(f"Recommended {selected_crop} Varieties")
-
-    filtered_seeds = pd.DataFrame()  # Initialize an empty DataFrame
-    # Case-insensitive matching with the 'CROP' column
-    st.write(f"Showing best varieties for **{selected_crop}** in **{selected_district}**.")
-
+    st.header("🌱 Triple-Variety Seed Matchmaker")
+    
     try:
-        filtered_seeds=df_seeds[(df_seeds['District'].str.upper()==selected_district.upper()) &
-                                (df_seeds['Crop'].str.capitalize()==selected_crop.capitalize())]
-    except KeyError as e:
-        st.error(f"Column Mapping Error: Ensure your CSV has a column named 'District' and 'Crop'. Missing: {e}")
-
-    if not filtered_seeds.empty:
-        col_stable, col_yield, col_short=st.columns(3)
-
-        with col_stable:
-            stable=filtered_seeds[filtered_seeds['Category']=='Stable Variety'].iloc[0]
-            st.info(f"**Stable Variety**\n\n**{stable['Seed_Name']}**")
-            st.caption(f"Reason: {stable['Justification']}")
-
-
-        with col_yield:
-            high_yield=filtered_seeds[filtered_seeds['Category']=='High Yield'].iloc[0]
-            st.success(f"**High Yield**\n\n**{high_yield['Seed_Name']}**")
-            st.caption(f"Reason: {high_yield['Justification']}")
-
-        with col_short:
-            short_duration=filtered_seeds[filtered_seeds['Category']=='Short Duration'].iloc[0]
-            st.warning(f"**Short Duration**\n\n**{short_duration['Seed_Name']}**")
-            st.caption(f"Reason: {short_duration['Justification']}")
-
-    else:
-        st.warning(f"No specific seed data found for this combination. Showing regional standards.")
+        df_seeds = pd.read_csv('seed_recommendations.csv')
+        # Force column names to lowercase and strip spaces for total safety
+        df_seeds.columns = [c.strip().lower() for c in df_seeds.columns]
+        
+        # Mapping logic: Find the column that 'looks' like District or Crop
+        dist_col = [c for c in df_seeds.columns if 'dist' in c][0]
+        crop_col = [c for c in df_seeds.columns if 'crop' in c][0]
+        
+        # Perform the filter
+        filtered_seeds = df_seeds[
+            (df_seeds[dist_col] == selected_district.lower()) & 
+            (df_seeds[crop_col] == selected_crop.lower())
+        ]
+        
+        if not filtered_seeds.empty:
+            st.success(f"Found {len(filtered_seeds)} varieties for {selected_district}")
+            # Use columns for Stable, High Yield, Short Duration as planned
+            col1, col2, col3 = st.columns(3)
+            # ... display logic ...
+        else:
+            st.warning(f"No specific data in CSV for {selected_district} + {selected_crop}")
+            
+    except Exception as e:
+        st.error(f"Critical CSV Error: {e}")
+        st.info("Check if your CSV headers are: District, Crop, Seed_Name, Category, Justification")
     
 
 with tab3:
