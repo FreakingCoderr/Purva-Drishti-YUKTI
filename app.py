@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 import joblib
+import streamlit.components.v1 as components
 
 st.set_page_config(page_title="Annapurna 1.0", layout="wide")
 #PWA support for low bandwidth areas
@@ -17,6 +18,12 @@ st.components.v1.html(
     height=0
 )
 st.info("Low bandwidth Mobile mode implemented.")
+
+
+with st.sidebar:
+    st.markdown("###System Status: Active")
+    components.iframe("https://my.spline.design/googlyeyes-9Fjxq0BwUhp4vJXFAEwwEmd7-KnC/", height=300)
+    st.markdown("---")
 
 #---Load Data (CSV)---
 df_seeds=pd.read_csv('seeds.csv')
