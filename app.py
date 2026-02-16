@@ -65,12 +65,34 @@ with tab1:
             s_id, 
             land_area
         ]], columns=['District', 'Crop', 'Year', 'Season', 'Area'])
+
         try:
             # 1. Get the raw prediction (Tons per Hectare)
             prediction_per_ha = yield_model.predict(input_data)[0]
     
             # 2. Calculate the total yield based on user's land area
             total_harvest = prediction_per_ha * land_area
+
+            benchmark_yield=10.0
+            probability_score=min(max((prediction_per_ha / benchmark_yield) * 100, 30), 98)
+
+            if probability_score >80:
+                risk_factor="Low: Optimal soil and climate synergy."
+            elif probability_score >60:
+                risk_factor="Moderate: Potential Yield lag due to seasonal variance."
+            else:
+                risk_factor="High: Historical Data suggests challenging conditions."
+
+            #Display the score
+            st.markdown("---")
+            st.subheader("📊 Success Probability Analysis")
+            col_prob, col_risk=st.columns(2)
+
+            with col_prob:
+                st.metric("Success Score", f"{round(probability_score, 2)}%", help="Probability based on historical regional records.")
+
+            with col_risk:
+                st.write(f"**Key Risk Factor:** {risk_factor}")
     
             # 3. Display both metrics
             st.markdown("---")
