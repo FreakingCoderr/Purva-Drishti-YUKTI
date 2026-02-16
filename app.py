@@ -100,7 +100,11 @@ with tab2:
     # Case-insensitive matching with the 'CROP' column
     st.write(f"Showing best varieties for **{selected_crop}** in **{selected_district}**.")
 
-    filtered_seeds=df_seeds[(df_seeds['District']==selected_district) & (df_seeds['Crop']==selected_crop)]
+    try:
+        filtered_seeds=df_seeds[(df_seeds['District'].str.upper()==selected_district.upper()) &
+                                (df_seeds['Crop'].str.capitalize()==selected_crop.capitalize())]
+    except KeyError as e:
+        st.error(f"Column Mapping Error: Ensure your CSV has a column named 'District' and 'Crop'. Missing: {e}")
 
     if not filtered_seeds.empty:
         col_stable, col_yield, col_short=st.columns(3)
