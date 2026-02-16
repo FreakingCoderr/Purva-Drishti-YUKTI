@@ -98,21 +98,32 @@ with tab1:
 with tab2:
     st.header(f"Recommended {selected_crop} Varieties")
     # Case-insensitive matching with the 'CROP' column
-    seed_data = df_seeds[df_seeds['Crop'].str.contains(selected_crop, case=False, na=False)]
-    
-    if not seed_data.empty:                                                                                                                                                                                                              
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.info("**Stable Variety**")
-            st.write(seed_data['Stable Variety'].values[0])
-        with col2:
-            st.success("**High Yield Variety**")
-            st.write(seed_data['High Yield Variety'].values[0])
-        with col3:
-            st.warning("**Short Duration**")
-            st.write(seed_data['Short Duration Variety'].values[0])
+    st.write(f"Showing best varieties for **{selected_crop}** in **{selected_district}**.")
+
+    filtered_seeds=df_seeds[(df_seeds['District']==selected_district) & (df_seeds['Crop']==selected_crop)]
+
+    if not filtered_seeds.empty:
+        col_stable, col_yield, col_short=st.columns(3)
+
+        with col_stable:
+            stable=filtered_seeds[filtered_seeds['Category']=='Stable Variety'].iloc[0]
+            st.info(f"**Stable Variety**\n\n**{stable['Seed_Name']}**")
+            st.caption(f"Reason: {stable['Justification']}")
+
+
+        with col_yield:
+            high_yield=filtered_seeds[filtered_seeds['Category']=='High Yield'].iloc[0]
+            st.success(f"**High Yield**\n\n**{high_yield['Seed_Name']}**")
+            st.caption(f"Reason: {high_yield['Justification']}")
+
+        with col_short:
+            short_duration=filtered_seeds[filtered_seeds['Category']=='Short Duration'].iloc[0]
+            st.warning(f"**Short Duration**\n\n**{short_duration['Seed_Name']}**")
+            st.caption(f"Reason: {short_duration['Justification']}")
+
     else:
-        st.error("No variety data found for this selection.")
+        st.warning(f"No specific seed data found for this combination. Showing regional standards.")
+    
 
 with tab3:
     st.header(f"🛡️ {selected_crop} Health Protection")
