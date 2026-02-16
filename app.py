@@ -1,14 +1,6 @@
 import pandas as pd
 import streamlit as st
 import joblib
-import streamlit.components.v1 as components
-
-# Professional Hack: Place them at the top of the sidebar 
-with st.sidebar:
-    st.markdown("### 👀 System Monitoring")
-    # Replace 'YOUR_URL_HERE' with the link you just copied
-    components.iframe("https://my.spline.design/googlyeyes-fC7zmr5iojkAgcJyfpf8uzG2-UN1/", height=300)
-    st.markdown("---")
 
 #---Load Data (CSV)---
 df_seeds=pd.read_csv('seeds.csv')
