@@ -4,14 +4,6 @@ import joblib
 import streamlit.components.v1 as components
 
 st.set_page_config(page_title="Annapurna 1.0", layout="wide")
-
-
-with st.sidebar:
-    st.markdown("### System Status: Active")
-    components.iframe("https://my.spline.design/googlyeyes-9Fjxq0BwUhp4vJXFAEwwEmd7-KnC/", height=300)
-    st.markdown("---")
-    st.info("TEAM Y0137- Purva-Drishti")
-
 #PWA support for low bandwidth areas
 st.components.v1.html(
     """<script>
