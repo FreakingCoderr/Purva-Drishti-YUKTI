@@ -99,38 +99,36 @@ with tab2:
     st.header("🌱 Triple-Variety Seed Matchmaker")
     
     try:
-        df_seeds = pd.read_csv('seeds.csv')
+        df_seeds = pd.read_csv('seed_recommendations.csv')
         
-        # 1. DEBUG: Show actual columns if mapping fails
-        actual_cols = df_seeds.columns.tolist()
+        # Filter ONLY by Crop since 'District' isn't in this CSV
+        filtered_seeds = df_seeds[df_seeds['Crop'].str.strip().str.capitalize() == selected_crop.capitalize()]
         
-        # 2. Hardcoded selection for speed
-        # If your CSV columns are 'District' and 'Crop', this works.
-        # If they are different, change the strings below to match actual_cols.
-        try:
-            target_dist_col = 'District'
-            target_crop_col = 'Crop'
+        if not filtered_seeds.empty:
+            row = filtered_seeds.iloc[0]  # Get the recommendations for that crop
             
-            filtered_seeds = df_seeds[
-                (df_seeds[target_dist_col].str.strip().str.upper() == selected_district.upper()) & 
-                (df_seeds[target_crop_col].str.strip().str.capitalize() == selected_crop.capitalize())
-            ]
+            st.success(f"Top Recommendations for {selected_crop}")
+            col1, col2, col3 = st.columns(3)
             
-            if not filtered_seeds.empty:
-                st.success(f"Recommended Varieties for {selected_district}")
-                # DISPLAY LOGIC
-                for _, row in filtered_seeds.iterrows():
-                    st.write(f"**{row['Category']}**: {row['Seed_Name']}")
-                    st.caption(row['Justification'])
-            else:
-                st.warning(f"No match in CSV. Found columns: {actual_cols}")
-
-        except KeyError:
-            st.error(f"Header Mismatch! Your CSV headers are: {actual_cols}")
-            st.info("Rename your CSV columns to 'District' and 'Crop' exactly.")
+            with col1:
+                st.info("**Stable Variety**")
+                st.write(row['Stable Variety'])
+                st.caption("Optimized for consistent performance in regional soil.")
+                
+            with col2:
+                st.success("**High Yield**")
+                st.write(row['High Yield Variety'])
+                st.caption("Maximum production potential for surplus harvest.")
+                
+            with col3:
+                st.warning("**Short Duration**")
+                st.write(row['Short Duration Variety'])
+                st.caption("Fastest maturity to avoid seasonal weather risks.")
+        else:
+            st.warning(f"No seed data available for {selected_crop} yet.")
             
     except Exception as e:
-        st.error(f"Critical Error: {e}")
+        st.error(f"Display Error: {e}")
     
 
 with tab3:
