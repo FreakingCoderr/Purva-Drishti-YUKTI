@@ -99,7 +99,7 @@ with tab2:
     st.header("🌱 Triple-Variety Seed Matchmaker")
     
     try:
-        df_seeds = pd.read_csv('seed_recommendations.csv')
+        df_seeds = pd.read_csv('seeds.csv')
         # Force column names to lowercase and strip spaces for total safety
         df_seeds.columns = [c.strip().lower() for c in df_seeds.columns]
         
