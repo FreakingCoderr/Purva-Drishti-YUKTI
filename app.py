@@ -2,6 +2,21 @@ import pandas as pd
 import streamlit as st
 import joblib
 
+#PWA support for low bandwidth areas
+st.components.v1.html(
+    """<script>
+    if('serviceworker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('https://cdn.jsdeliver.net/gh/TalhaAwan/PWA-for-Streamlit/sw.js');
+            });
+            }
+            </script>
+            <link rel="manifest" href="https://cdn.jsdeliver.net/gh/TalhaAwan/PWA-for-Streamlit/manifest.json">
+            """,
+    height=0
+)
+st.info("Low bandwidth Mobile mode implemented.")
+
 #---Load Data (CSV)---
 df_seeds=pd.read_csv('seeds.csv')
 df_disease=pd.read_csv('Disease_Advice.csv')
