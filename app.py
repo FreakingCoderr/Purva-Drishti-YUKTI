@@ -97,6 +97,8 @@ with tab1:
 
 with tab2:
     st.header(f"Recommended {selected_crop} Varieties")
+
+    filtered_seeds = pd.DataFrame()  # Initialize an empty DataFrame
     # Case-insensitive matching with the 'CROP' column
     st.write(f"Showing best varieties for **{selected_crop}** in **{selected_district}**.")
 
