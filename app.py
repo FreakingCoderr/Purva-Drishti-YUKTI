@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import joblib
 
+st.set_page_config(page_title="Annapurna 1.0", layout="wide")
 #PWA support for low bandwidth areas
 st.components.v1.html(
     """<script>
@@ -28,7 +29,7 @@ except FileNotFoundError:
     yield_model=None
 
 #---Page Config---
-st.set_page_config(page_title="Annapurna 1.0", layout="wide")
+
 st.title("🌾Annapurna 1.0: Purvanchal Agri-Intelligence")
 st.markdown("---")
 
