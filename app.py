@@ -37,7 +37,7 @@ st.markdown("---")
 districts= ["ALLAHABAD", "AMBEDKAR NAGAR", "AZAMGARH", "BAHRAICH", "BALLIA", 
     "BALRAMPUR", "BASTI", "CHANDAULI", "DEORIA", "FATEHPUR", 
     "GHAZIPUR", "GONDA", "GORAKHPUR", "JAUNPUR", "KAUSHAMBI", 
-    "KUSHI NAGAR", "MAHARAJGANJ", "MAU", "MIRZAPUR", "PRATAPGARH", 
+    "KUSHI NAGAR", "MAHARAJGANJ", "MAU", "MIRZAPUR", "PRATAPGARH",
     "SANT KABEER NAGAR", "SANT RAVIDAS NAGAR", "SHRAVASTI", 
     "SIDDHARTH NAGAR", "SONBHADRA", "SULTANPUR", "VARANASI"]
 
@@ -112,6 +112,25 @@ with tab1:
                  # Adding the 'Risk Factor' explanation required by the problem statement
                  st.write("**Analysis of Key Risk Factors:**")
                  st.caption(f"The model predicts with {model_accuracy}% precision for {selected_district}. Seasonal variance in {selected_season} is the primary factor for the ±12.4% deviation.")
+
+            st.markdown("---")
+            st.subheader("⚠️ Pre-Sowing Infection alert")
+
+            risk_map={
+                "Wheat": {"Pest": "Yellow Rust", "Details": "Found in cooler regions of Purvanchal. Check soil moisture levels."},
+                "Rice": {"Pest": "Gundhi Bug", "Details": "High risk during milk stage. Ensure proper field drainage."},
+                "Mustard" : {"Pest": "Aphids", "Details": "Monitor for sticky residue on leaves. Early detection is key."},
+                "Barley" : {"Pest": "Powdery Mildew", "Details": "Look for white powdery spots on leaves. Avoid overhead irrigation."}
+            }
+
+            if selected_crop in risk_map:
+                pest_info=risk_map[selected_crop]
+                st.error(f"**⚠️Infection Risk Warning {pest_info['Pest']} Detected**")
+                st.warning(f"**Alert Details:** {pest_info['Details']}")
+                st.info("**Advice:** Use protective seed treatment to mitigate early-stage infections.")
+
+            else:
+                st.success("No major regional infection risks detected for this crop.")
     
             # 3. Display both metrics
             st.markdown("---")
