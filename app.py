@@ -105,7 +105,7 @@ with tab1:
 
             with col_acc:
                  st.metric(
-                      label="Success Probability", 
+                      label="Success Probability (According to Root Mean Squared Error)", 
                       value=f"{model_accuracy}%", 
                       help="Calculated based on XGBoost model accuracy across regional historical records."
                       )
