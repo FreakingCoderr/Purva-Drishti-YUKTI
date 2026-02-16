@@ -100,30 +100,37 @@ with tab2:
     
     try:
         df_seeds = pd.read_csv('seeds.csv')
-        # Force column names to lowercase and strip spaces for total safety
-        df_seeds.columns = [c.strip().lower() for c in df_seeds.columns]
         
-        # Mapping logic: Find the column that 'looks' like District or Crop
-        dist_col = [c for c in df_seeds.columns if 'dist' in c][0]
-        crop_col = [c for c in df_seeds.columns if 'crop' in c][0]
+        # 1. DEBUG: Show actual columns if mapping fails
+        actual_cols = df_seeds.columns.tolist()
         
-        # Perform the filter
-        filtered_seeds = df_seeds[
-            (df_seeds[dist_col] == selected_district.lower()) & 
-            (df_seeds[crop_col] == selected_crop.lower())
-        ]
-        
-        if not filtered_seeds.empty:
-            st.success(f"Found {len(filtered_seeds)} varieties for {selected_district}")
-            # Use columns for Stable, High Yield, Short Duration as planned
-            col1, col2, col3 = st.columns(3)
-            # ... display logic ...
-        else:
-            st.warning(f"No specific data in CSV for {selected_district} + {selected_crop}")
+        # 2. Hardcoded selection for speed
+        # If your CSV columns are 'District' and 'Crop', this works.
+        # If they are different, change the strings below to match actual_cols.
+        try:
+            target_dist_col = 'District'
+            target_crop_col = 'Crop'
+            
+            filtered_seeds = df_seeds[
+                (df_seeds[target_dist_col].str.strip().str.upper() == selected_district.upper()) & 
+                (df_seeds[target_crop_col].str.strip().str.capitalize() == selected_crop.capitalize())
+            ]
+            
+            if not filtered_seeds.empty:
+                st.success(f"Recommended Varieties for {selected_district}")
+                # DISPLAY LOGIC
+                for _, row in filtered_seeds.iterrows():
+                    st.write(f"**{row['Category']}**: {row['Seed_Name']}")
+                    st.caption(row['Justification'])
+            else:
+                st.warning(f"No match in CSV. Found columns: {actual_cols}")
+
+        except KeyError:
+            st.error(f"Header Mismatch! Your CSV headers are: {actual_cols}")
+            st.info("Rename your CSV columns to 'District' and 'Crop' exactly.")
             
     except Exception as e:
-        st.error(f"Critical CSV Error: {e}")
-        st.info("Check if your CSV headers are: District, Crop, Seed_Name, Category, Justification")
+        st.error(f"Critical Error: {e}")
     
 
 with tab3:
