@@ -99,7 +99,7 @@ with tab2:
     st.header("🌱 Triple-Variety Seed Matchmaker")
     
     try:
-        df_seeds = pd.read_csv('seed_recommendations.csv')
+        df_seeds = pd.read_csv('seeds.csv')
         
         # Filter ONLY by Crop since 'District' isn't in this CSV
         filtered_seeds = df_seeds[df_seeds['Crop'].str.strip().str.capitalize() == selected_crop.capitalize()]
